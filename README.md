@@ -1,4 +1,3 @@
-markdown
 # Breast Ultrasound Image Classification using Deep Learning
 
 [![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
@@ -15,16 +14,18 @@ markdown
 ## 📋 Overview
 
 This project implements a deep learning-based image classification system for breast ultrasound images using the **BUSI (Breast Ultrasound Images) dataset**. The model classifies ultrasound images into three categories:
+
 - **Normal** (133 images)
 - **Benign** (437 images)
 - **Malignant** (210 images)
 
 The research systematically investigates the impact of **class imbalance**—a common challenge in medical imaging datasets—and compares four imbalance mitigation strategies.
 
-### 🎯 Key Achievements
-- **Best Accuracy**: 88.0% (Data Augmentation)
-- **Best Malignant Recall**: 95% (Class Weighting)
-- **Weighted F1-Score**: 0.877 (Data Augmentation)
+## 🎯 Key Achievements
+
+- **Best Accuracy:** 88.0% (Data Augmentation)
+- **Best Malignant Recall:** 95% (Class Weighting)
+- **Weighted F1-Score:** 0.877 (Data Augmentation)
 - **45% improvement** in cancer detection sensitivity over baseline
 
 ## 📊 Results Summary
@@ -40,6 +41,7 @@ The research systematically investigates the impact of **class imbalance**—a c
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.12+
 - Kaggle account (for GPU access) OR local GPU with CUDA
 - 16GB+ RAM recommended
@@ -47,29 +49,37 @@ The research systematically investigates the impact of **class imbalance**—a c
 ### Installation
 
 **1. Clone the repository**
+
 ```bash
 git clone https://github.com/vanshraj/cs23b1079-breast-ultrasound-classification.git
 cd cs23b1079-breast-ultrasound-classification
-2. Install dependencies
+```
 
-bash
+**2. Install dependencies**
+
+```bash
 pip install -r requirements.txt
-3. Download the dataset
+```
 
-Download from Kaggle
+**3. Download the dataset**
 
-Place in /kaggle/input/ directory (for Kaggle)
+Download from Kaggle.
 
-OR update DATA_DIR path in notebook for local use
+Place in `/kaggle/input/` directory (for Kaggle)
 
-4. Run the notebook
+OR update `DATA_DIR` path in the notebook for local use.
 
-bash
-jupyter notebook vansh_assignment\(1\).ipynb
-📦 Dependencies
-Create a requirements.txt file with:
+**4. Run the notebook**
 
-text
+```bash
+jupyter notebook vansh_assignment(1).ipynb
+```
+
+## 📦 Dependencies
+
+Create a `requirements.txt` file with:
+
+```
 torch>=2.0.0
 torchvision>=0.15.0
 numpy>=1.24.0
@@ -81,138 +91,173 @@ jupyter>=1.0.0
 ipykernel>=6.0.0
 tqdm>=4.65.0
 Pillow>=9.5.0
-🧠 Model Architecture
-ResNet18 Configuration
-Base Architecture: ResNet18 (trained from scratch)
+```
 
-Input Size: 224×224×3
+## 🧠 Model Architecture
 
-Output Classes: 3 (Normal, Benign, Malignant)
+### ResNet18 Configuration
 
-Total Parameters: 4,908,227
+- **Base Architecture:** ResNet18 (trained from scratch)
+- **Input Size:** 224×224×3
+- **Output Classes:** 3 (Normal, Benign, Malignant)
+- **Total Parameters:** 4,908,227
 
-Training Parameters
-Parameter	Value
-Optimizer	Adam (lr=0.001)
-Batch Size	32
-Max Epochs	30
-Early Stopping	Patience = 5
-Hardware	NVIDIA Tesla P100
-🔬 Imbalance Handling Techniques
-1. Baseline
-Standard cross-entropy loss without handling.
+### Training Parameters
 
-2. Class Weighting
+| Parameter | Value |
+|----------|------|
+| Optimizer | Adam (lr=0.001) |
+| Batch Size | 32 |
+| Max Epochs | 30 |
+| Early Stopping | Patience = 5 |
+| Hardware | NVIDIA Tesla P100 |
+
+## 🔬 Imbalance Handling Techniques
+
+### 1. Baseline
+
+Standard cross-entropy loss without imbalance handling.
+
+### 2. Class Weighting
+
 Weights computed as inverse class frequencies:
 
-Normal: 1.95
+- Normal: 1.95
+- Benign: 0.59
+- Malignant: 1.24
 
-Benign: 0.59
+### 3. Oversampling
 
-Malignant: 1.24
+Balanced batches created using **WeightedRandomSampler**.
 
-3. Oversampling
-WeightedRandomSampler for balanced batches.
+### 4. Data Augmentation
 
-4. Data Augmentation
-Random horizontal flip (p=0.5)
+- Random horizontal flip (p=0.5)
+- Random rotation (±15°)
+- Color jitter
 
-Random rotation (±15°)
+### 5. Focal Loss
 
-Color jitter
-
-5. Focal Loss
 Modified loss with γ=2 focusing on hard examples.
 
-📈 Detailed Results
-Baseline
-text
-              precision    recall  f1-score   support
+## 📈 Detailed Results
+
+### Baseline
+
+```
+precision    recall  f1-score   support
 Normal           0.83      0.81      0.82       134
 Benign           0.63      0.79      0.70        63
 Malignant        0.77      0.50      0.61        40
-    accuracy                           0.76       237
-Class Weighting
-text
-              precision    recall  f1-score   support
+accuracy                           0.76       237
+```
+
+### Class Weighting
+
+```
+precision    recall  f1-score   support
 Normal           0.89      0.88      0.89       134
 Benign           0.89      0.78      0.83        63
 Malignant        0.76      0.95      0.84        40
-    accuracy                           0.86       237
-Oversampling
-text
-              precision    recall  f1-score   support
+accuracy                           0.86       237
+```
+
+### Oversampling
+
+```
+precision    recall  f1-score   support
 Normal           0.90      0.84      0.87       134
 Benign           0.79      0.79      0.79        63
 Malignant        0.76      0.93      0.83        40
-    accuracy                           0.84       237
-Data Augmentation (Best Overall)
-text
-              precision    recall  f1-score   support
+accuracy                           0.84       237
+```
+
+### Data Augmentation (Best Overall)
+
+```
+precision    recall  f1-score   support
 Normal           0.90      0.90      0.90       134
 Benign           0.89      0.79      0.84        63
 Malignant        0.80      0.93      0.86        40
-    accuracy                           0.88       237
-Focal Loss
-text
-              precision    recall  f1-score   support
+accuracy                           0.88       237
+```
+
+### Focal Loss
+
+```
+precision    recall  f1-score   support
 Normal           0.88      0.69      0.78       134
 Benign           0.64      0.78      0.71        63
 Malignant        0.64      0.88      0.74        40
-    accuracy                           0.75       237
-🎯 Training Dynamics
-Method	Best Validation Accuracy	Epoch
-Baseline	79.75%	7
-Class Weighting	89.45%	23
-Oversampling	88.61%	18
-Data Augmentation	88.61%	16
-Focal Loss	83.54%	21
-💡 Key Insights
-Clinical Significance
-45% improvement in Malignant recall (50% → 95%)
+accuracy                           0.75       237
+```
 
-False negative rate reduced from 50% to just 5%
+## 🎯 Training Dynamics
 
-Balanced performance across all classes with augmentation
+| Method | Best Validation Accuracy | Epoch |
+|------|------|------|
+| Baseline | 79.75% | 7 |
+| Class Weighting | 89.45% | 23 |
+| Oversampling | 88.61% | 18 |
+| Data Augmentation | 88.61% | 16 |
+| Focal Loss | 83.54% | 21 |
 
-Best Practices
-Priority	Recommended Technique
-Cancer Detection	Class Weighting
-Overall Accuracy	Data Augmentation
-Balanced Performance	Oversampling
-🔄 Reproduction Guide
-On Kaggle
-Create new Kaggle notebook with GPU
+## 💡 Key Insights
 
-Upload vansh_assignment(1).ipynb
+### Clinical Significance
 
-Add BUSI dataset
+- **45% improvement** in Malignant recall (50% → 95%)
+- False negative rate reduced from **50% to just 5%**
+- Balanced performance across all classes with augmentation
 
-Run all cells (30-45 minutes)
+### Best Practices
 
-On Local Machine
-bash
+| Priority | Recommended Technique |
+|---------|----------------------|
+| Cancer Detection | Class Weighting |
+| Overall Accuracy | Data Augmentation |
+| Balanced Performance | Oversampling |
+
+## 🔄 Reproduction Guide
+
+### On Kaggle
+
+1. Create new Kaggle notebook with GPU
+2. Upload `vansh_assignment(1).ipynb`
+3. Add BUSI dataset
+4. Run all cells (30–45 minutes)
+
+### On Local Machine
+
+```bash
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate
+# Windows: venv\Scripts\activate
 pip install -r requirements.txt
 jupyter notebook
-📝 Citation
-bibtex
-@misc{vansh2026breast,
-    author = {Vansh Raj Singh},
-    title = {Breast Ultrasound Image Classification using Deep Learning},
-    year = {2026},
-    publisher = {GitHub},
-    howpublished = {\url{https://github.com/vanshraj/cs23b1079-breast-ultrasound-classification}}
-}
-📄 License
+```
+
+
+## 📄 License
+
 MIT License - see LICENSE file.
 
-👨‍💻 Author
-Vansh Raj Singh (CS23B1079)
+---
 
-📧 Email: vansh.raj@domain.com
+## 👨‍💻 Author
 
-🔗 GitHub: @vanshraj
+**Vansh Raj Singh**
 
-<div align="center"> <b>⭐ Star this repository if you find it useful! ⭐</b> <br> <i>Last Updated: March 2026</i> </div> ```
+B.Tech – Computer Science  
+IIIT Raichur, Karnataka  
+
+📧 Email: vanshraj12004@gmail.com  
+🔗 GitHub: https://github.com/Vansh456789  
+
+---
+
+<div align="center">
+
+⭐ **If you found this project useful, please consider starring the repository!** ⭐  
+
+</div>
